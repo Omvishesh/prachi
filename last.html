@@ -201,11 +201,13 @@
         }
 
         .memory-img {
+            display: block;
             width: 100%;
-            height: 250px;
+            height: 340px;
             object-fit: cover;
+            object-position: center 25%;
             border-radius: 15px;
-            margin-bottom: 1rem;
+            margin: 0 auto 1rem;
             transition: transform 0.5s ease;
         }
 
@@ -262,6 +264,113 @@
             max-width: 800px;
             margin: 0 auto 2rem;
             line-height: 1.8;
+        }
+
+        /* Reveal Card */
+        .reveal-card {
+            perspective: 1600px;
+            max-width: 620px;
+            width: 100%;
+            margin: 0 auto 2.5rem;
+            cursor: pointer;
+            min-height: 380px;
+        }
+
+        .reveal-card-inner {
+            position: relative;
+            width: 100%;
+            min-height: 380px;
+            transition: transform 0.9s cubic-bezier(0.4, 0, 0.2, 1);
+            transform-style: preserve-3d;
+        }
+
+        .reveal-card.opened .reveal-card-inner {
+            transform: rotateY(180deg);
+        }
+
+        .reveal-card-front,
+        .reveal-card-back {
+            position: absolute;
+            inset: 0;
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+            border-radius: 24px;
+            padding: 2.2rem 2rem;
+            box-shadow: 0 15px 35px rgba(255, 105, 180, 0.25);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+
+        .reveal-card-front {
+            background: linear-gradient(135deg, #ff9ec7 0%, #ff69b4 50%, #da70d6 100%);
+            color: white;
+        }
+
+        .reveal-card-front::after {
+            content: '';
+            position: absolute;
+            inset: 12px;
+            border: 2px dashed rgba(255, 255, 255, 0.55);
+            border-radius: 18px;
+            pointer-events: none;
+        }
+
+        .envelope-icon {
+            font-size: 5rem;
+            margin-bottom: 1rem;
+            animation: envelopeBob 2.4s ease-in-out infinite;
+            filter: drop-shadow(0 6px 10px rgba(0, 0, 0, 0.15));
+        }
+
+        @keyframes envelopeBob {
+
+            0%,
+            100% {
+                transform: translateY(0) rotate(-3deg);
+            }
+
+            50% {
+                transform: translateY(-10px) rotate(3deg);
+            }
+        }
+
+        .reveal-prompt {
+            font-family: 'Dancing Script', cursive;
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+            text-shadow: 1px 2px 4px rgba(0, 0, 0, 0.15);
+        }
+
+        .reveal-hint {
+            font-size: 0.95rem;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            opacity: 0.85;
+        }
+
+        .reveal-card-back {
+            background: rgba(255, 255, 255, 0.97);
+            transform: rotateY(180deg);
+            color: #4a4a4a;
+            gap: 1rem;
+        }
+
+        .reveal-card-back p {
+            font-size: 1.1rem;
+            line-height: 1.75;
+            margin: 0;
+            max-width: 100%;
+        }
+
+        .reveal-close {
+            font-size: 0.85rem;
+            color: #ff69b4;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            margin-top: 0.5rem;
         }
 
         .goodbye-btn {
@@ -355,6 +464,23 @@
             .final-message h2 {
                 font-size: 2.5rem;
             }
+
+            .memory-img {
+                height: 300px;
+            }
+
+            .reveal-card,
+            .reveal-card-inner {
+                min-height: 440px;
+            }
+
+            .reveal-prompt {
+                font-size: 1.6rem;
+            }
+
+            .reveal-card-back p {
+                font-size: 1rem;
+            }
         }
     </style>
 </head>
@@ -377,31 +503,47 @@
 
     <div class="memory-container">
         <div class="memory-card">
-            <img src="./d1.jpg" alt="First Date" class="memory-img">
+            <img src="./p2.jpg" alt="First Date" class="memory-img">
             <div class="memory-date">Her Smile Says It All</div>
-            <div class="memory-caption">You’re truly one of the sweetest girls I know, and I feel lucky to have a sis
+            <div class="memory-caption">You’re truly one of the sweetest girls I know, and I feel lucky to have a friend
                 like you.❤️</div>
         </div>
         <div class="memory-card">
-            <img src="./d2.jpg" alt="Beach Day" class="memory-img">
-            <div class="memory-date">Together Vibes</div>
+            <img src="./p1.jpg" alt="Beach Day" class="memory-img">
+            <div class="memory-date">Traditional Diva</div>
             <div class="memory-caption">May your journey ahead be filled with happiness, success, and endless
                 smiles.😊💕</div>
         </div>
         <div class="memory-card">
-            <img src="./d3.jpg" alt="Movie Night" class="memory-img">
+            <img src="./p3.jpg" alt="Movie Night" class="memory-img">
             <div class="memory-date">Pretty Soul</div>
-            <div class="memory-caption">Keep being the amazing person you are—you make every moment brighter.🌸💖</div>
+            <div class="memory-caption">Keep being the amazing person you are, you make every moment brighter.🌸💖</div>
         </div>
 
     </div>
 
     <section class="final-message">
         <h2>Thank You for the Memories</h2>
-        <p>Every laugh, every chat, and every moment we’ve shared has been truly special.💫<br>
-            I’m so grateful for the bond we have, and for the positivity you always bring into my life.<br>
-            On your birthday, I just wish for endless happiness, love, and success to come your way.🌸</p>
-        <p>You deserve all the joy in the world—keep shining and spreading your beautiful energy.✨</p>
+
+        <div class="reveal-card" role="button" tabindex="0" aria-label="Open birthday message"
+            onclick="this.classList.toggle('opened')"
+            onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();this.classList.toggle('opened');}">
+            <div class="reveal-card-inner">
+                <div class="reveal-card-front">
+                    <div class="envelope-icon">💌</div>
+                    <div class="reveal-prompt">A Little Note For You</div>
+                    <div class="reveal-hint">✨ Tap to open ✨</div>
+                </div>
+                <div class="reveal-card-back">
+                    <p>Every laugh, every chat, and every moment we’ve shared has been truly special.💫
+                        I’m so grateful for the bond we have, and for the positivity you always bring into my life.
+                        On your birthday, I just wish for endless happiness, love, and success to come your way.🌸</p>
+                    <p>You deserve all the joy in the world—keep shining and spreading your beautiful energy.✨</p>
+                    <div class="reveal-close">Tap to close 💕</div>
+                </div>
+            </div>
+        </div>
+
         <a href="#" class="goodbye-btn">Until We Meet Again 💝</a>
     </section>
 </body>
